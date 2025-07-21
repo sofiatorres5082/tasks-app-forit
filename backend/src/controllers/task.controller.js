@@ -1,39 +1,90 @@
 import * as taskService from '../services/task.service.js';
 
-export function getTasks(req, res) {
-  const tasks = taskService.getAllTasks();
-  res.json(tasks);
-}
-
-export function createTask(req, res) {
-  const { title, description } = req.body;
-
-  if (!title || !description) {
-    return res.status(400).json({ message: 'Título y descripción requeridos' });
+export function getTasks(req, res, next) {
+  try {
+    const tasks = taskService.getAllTasks();
+    res.json(tasks);
+  } catch (err) {
+    next(err);
   }
-
-  const newTask = taskService.addTask({ title, description });
-  res.status(201).json(newTask);
 }
 
-export function updateTask(req, res) {
-  const { id } = req.params;
-  const updatedTask = taskService.updateTask(id, req.body);
+export function createTask(req, res, next) {
+  try {
+    if (!req.body || typeof req.body !== 'object') {
+      const error = new Error('El cuerpo de la solicitud debe ser un objeto con título y descripción.');
+      error.status = 400;
+      throw error;
+    }
 
-  if (!updatedTask) {
-    return res.status(404).json({ message: 'Tarea no encontrada' });
+    const { title, description } = req.body;
+
+    if (!title || !description) {
+      const error = new Error('Título y descripción requeridos');
+      error.status = 400;
+      throw error;
+    }
+
+    const newTask = taskService.addTask({ title, description });
+    res.status(201).json(newTask);
+  } catch (err) {
+    next(err);
   }
-
-  res.json(updatedTask);
 }
 
-export function deleteTask(req, res) {
-  const { id } = req.params;
-  const deleted = taskService.deleteTask(id);
+export function updateTask(req, res, next) {
+  try {
+    const { id } = req.params;
 
-  if (!deleted) {
-    return res.status(404).json({ message: 'Tarea no encontrada' });
+    if (!req.body || typeof req.body !== 'object') {
+      const error = new Error('El cuerpo de la solicitud debe ser un objeto con los campos a actualizar.');
+      error.status = 400;
+      throw error;
+    }
+
+    const { title, description } = req.body;
+
+    if (!title && !description) {
+      const error = new Error('Debe proporcionar al menos un campo a actualizar (título o descripción).');
+      error.status = 400;
+      throw error;
+    }
+
+    const updatedTask = taskService.updateTask(id, req.body);
+
+    if (!updatedTask) {
+      const error = new Error('Tarea no encontrada');
+      error.status = 404;
+      throw error;
+    }
+
+    res.json(updatedTask);
+  } catch (err) {
+    next(err);
   }
-
-  res.json({ message: 'Tarea eliminada con éxito' });
 }
+
+export function deleteTask(req, res, next) {
+  try {
+    const { id } = req.params;
+
+    if (!id || typeof id !== 'string' || id.trim() === '') {
+      const error = new Error('ID inválido');
+      error.status = 400;
+      throw error;
+    }
+
+    const deleted = taskService.deleteTask(id);
+
+    if (!deleted) {
+      const error = new Error('Tarea no encontrada');
+      error.status = 404;
+      throw error;
+    }
+
+    res.json({ message: 'Tarea eliminada con éxito' });
+  } catch (err) {
+    next(err);
+  }
+}
+
