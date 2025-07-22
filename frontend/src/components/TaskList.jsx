@@ -1,14 +1,8 @@
-import { useEffect, useState } from "react";
-import { getTasks } from "../services/api";
+import { useState } from "react";
 import TaskItem from "./TaskItem";
 
-export default function TaskList() {
-  const [tasks, setTasks] = useState([]);
+export default function TaskList({ tasks }) {
   const [filter, setFilter] = useState("all");
-
-  useEffect(() => {
-    getTasks().then(setTasks);
-  }, []);
 
   const filteredTasks =
     filter === "all"
@@ -18,9 +12,15 @@ export default function TaskList() {
   return (
     <div className="space-y-4">
       <div className="flex justify-center gap-4 mb-4">
-        <button onClick={() => setFilter("all")} className="px-3 py-1 border rounded">Todas</button>
-        <button onClick={() => setFilter("completed")} className="px-3 py-1 border rounded">Completadas</button>
-        <button onClick={() => setFilter("pending")} className="px-3 py-1 border rounded">Pendientes</button>
+        <button onClick={() => setFilter("all")} className="px-3 py-1 border rounded">
+          Todas
+        </button>
+        <button onClick={() => setFilter("completed")} className="px-3 py-1 border rounded">
+          Completadas
+        </button>
+        <button onClick={() => setFilter("pending")} className="px-3 py-1 border rounded">
+          Pendientes
+        </button>
       </div>
 
       {filteredTasks.length === 0 ? (

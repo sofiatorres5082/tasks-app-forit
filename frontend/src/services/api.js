@@ -10,3 +10,22 @@ export const getTasks = async () => {
     return [];
   }
 };
+
+export const createTask = async (task) => {
+  try {
+    const response = await fetch(`${API_URL}/tasks`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task),
+    });
+
+    if (!response.ok) throw new Error("Error al crear tarea");
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
