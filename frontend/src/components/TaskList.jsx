@@ -1,8 +1,18 @@
 import { useState } from "react";
 import TaskItem from "./TaskItem";
 
-export default function TaskList({ tasks }) {
+export default function TaskList({ tasks, setTasks }) {
   const [filter, setFilter] = useState("all");
+
+  const handleTaskUpdated = (updatedTask) => {
+    setTasks((prev) =>
+      prev.map((t) => (t.id === updatedTask.id ? updatedTask : t))
+    );
+  };
+
+  const handleTaskDeleted = (deletedId) => {
+    setTasks((prev) => prev.filter((t) => t.id !== deletedId));
+  };
 
   const filteredTasks =
     filter === "all"
@@ -28,7 +38,12 @@ export default function TaskList({ tasks }) {
       ) : (
         <ul className="space-y-2">
           {filteredTasks.map((task) => (
-            <TaskItem key={task.id} task={task} />
+            <TaskItem
+              key={task.id}
+              task={task}
+              onTaskUpdated={handleTaskUpdated}
+              onTaskDeleted={handleTaskDeleted}
+            />
           ))}
         </ul>
       )}

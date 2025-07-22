@@ -19,7 +19,7 @@ export default function TaskForm({ onTaskCreated }) {
       setTitle("");
       setDescription("");
       setError("");
-      onTaskCreated?.(newTask); // notificar al padre que se creó
+      onTaskCreated?.(newTask);
     } else {
       setError("No se pudo crear la tarea.");
     }
