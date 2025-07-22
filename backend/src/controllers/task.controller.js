@@ -2,12 +2,22 @@ import * as taskService from '../services/task.service.js';
 
 export function getTasks(req, res, next) {
   try {
-    const tasks = taskService.getAllTasks();
+    const { status } = req.query; 
+
+    let tasks = taskService.getAllTasks();
+
+    if (status === 'completed') {
+      tasks = tasks.filter(task => task.completed === true);
+    } else if (status === 'pending') {
+      tasks = tasks.filter(task => task.completed === false);
+    }
+
     res.json(tasks);
   } catch (err) {
     next(err);
   }
 }
+
 
 export function createTask(req, res, next) {
   try {
