@@ -13,7 +13,7 @@ Aplicación full-stack de lista de tareas desarrollada como parte del challenge 
 ### Backend
 
 - **Node.js** - Entorno de ejecución de JavaScript
-- **Express.js - Framework web para Node.js
+- **Express.js** - Framework web para Node.js
 - **UUID** - Generación de identificadores únicos
 - **CORS** - Middleware para habilitar CORS
 - **dotenv** - Manejo de variables de entorno
@@ -130,3 +130,12 @@ task-manager/
     ├── package.json
     └── .env
 ```
+
+## Capturas de pantalla
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/3f95fcec-8121-4102-940c-ca309181761b" width="45%"/>
+  <img src="https://github.com/user-attachments/assets/0f4d886d-1138-4b8c-bb7a-793503904741" width="45%"/>
+  <img src="https://github.com/user-attachments/assets/b55bc157-eb72-4467-a9cf-5a1141a2cfee" width="45%"/>
+</p>
+
